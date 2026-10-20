@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
 )
 
 import config as cfgmod
+import logo
 from toast import Toast
 from watcher import WeChatMessage
 
@@ -228,6 +229,7 @@ class SettingsWindow(QWidget):
         self._loading = False
 
         self.setWindowTitle("微信消息提示 · 设置")
+        self.setWindowIcon(logo.logo_icon())
         self.setMinimumSize(880, 560)
         self.resize(940, 880)
         self.setStyleSheet(STYLE)

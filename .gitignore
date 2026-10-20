@@ -21,6 +21,9 @@ showcase.png
 # 运行时生成的用户配置（含本机路径，不入库）
 config.json
 
+# 图标生成的中间产物
+icon_256.png
+
 # 用户自备的头像（保留目录本身）
 avatars/*
 !avatars/.gitkeep

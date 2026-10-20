@@ -10,10 +10,11 @@ import sys
 import time
 
 from PySide6.QtCore import QObject, Qt, Signal
-from PySide6.QtGui import QAction, QColor, QFont, QIcon, QPainter, QPixmap
+from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QApplication, QMenu, QMessageBox, QSystemTrayIcon
 
 import config as cfgmod
+import logo
 import wechat
 from settings_window import SettingsWindow
 from toast import Toast, ToastManager
@@ -24,21 +25,7 @@ SERVER_NAME = "WeChatToast.SingleInstance"
 
 
 def make_tray_icon() -> QIcon:
-    pm = QPixmap(64, 64)
-    pm.fill(Qt.transparent)
-    p = QPainter(pm)
-    p.setRenderHint(QPainter.Antialiasing, True)
-    p.setPen(Qt.NoPen)
-    p.setBrush(QColor("#07C160"))
-    p.drawRoundedRect(4, 4, 56, 56, 16, 16)
-    p.setPen(QColor("#FFFFFF"))
-    f = QFont("Microsoft YaHei UI")
-    f.setPixelSize(34)
-    f.setWeight(QFont.Bold)
-    p.setFont(f)
-    p.drawText(pm.rect(), Qt.AlignCenter, "微")
-    p.end()
-    return QIcon(pm)
+    return logo.logo_icon()
 
 
 class Bridge(QObject):

@@ -1,34 +1,29 @@
 # -*- coding: utf-8 -*-
-"""生成应用图标 icon.ico（绿底圆角 + 微字），用于 exe 与托盘。"""
+"""生成 exe 文件图标 icon.ico。
+
+图形直接复用 logo.py，保证 exe 图标、托盘图标、窗口标题栏图标三处完全一致。
+改了 logo.py 里的形状或配色后，重跑本脚本再重新打包即可。
+"""
+import os
 import sys
 
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+
 from PIL import Image
-from PySide6.QtCore import QRectF, Qt
-from PySide6.QtGui import QColor, QFont, QPainter, QPixmap
 from PySide6.QtWidgets import QApplication
+
+import logo
 
 app = QApplication(sys.argv)
 
-SIZE = 256
-pm = QPixmap(SIZE, SIZE)
-pm.fill(Qt.transparent)
+SIZES = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
 
-p = QPainter(pm)
-p.setRenderHint(QPainter.Antialiasing, True)
-p.setPen(Qt.NoPen)
-p.setBrush(QColor("#07C160"))
-p.drawRoundedRect(QRectF(6, 6, SIZE - 12, SIZE - 12), 58, 58)
+png_path = os.path.join(ROOT, "icon_256.png")
+logo.logo_pixmap(256).save(png_path)
 
-p.setPen(QColor("#FFFFFF"))
-f = QFont("Microsoft YaHei UI")
-f.setPixelSize(146)
-f.setWeight(QFont.Bold)
-p.setFont(f)
-p.drawText(pm.rect(), Qt.AlignCenter, "微")
-p.end()
+img = Image.open(png_path).convert("RGBA")
+ico_path = os.path.join(ROOT, "icon.ico")
+img.save(ico_path, sizes=SIZES)
 
-pm.save("icon_256.png")
-
-img = Image.open("icon_256.png").convert("RGBA")
-img.save("icon.ico", sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)])
-print("saved icon.ico")
+print("saved", ico_path)
